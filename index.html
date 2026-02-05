@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Happy 18th Birthday Daddy</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
+
+<style>
+body{
+  margin:0;
+  background:#ffd6e8;
+  font-family:'Playfair Display',serif;
+  color:#4a2c3a;
+}
+
+section{
+  min-height:100vh;
+  padding:60px 12%;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+}
+
+.button{
+  margin-top:25px;
+  padding:12px 30px;
+  background:#ff9fcf;
+  border:none;
+  border-radius:30px;
+  font-size:1rem;
+  cursor:pointer;
+}
+.button:hover{background:#ff7ebc;}
+
+.hidden{display:none;}
+
+.banner{
+  font-family:'Great Vibes',cursive;
+  font-size:3.8rem;
+  color:#c2185b;
+  margin-bottom:35px;
+}
+
+/* Question box */
+.qbox{
+  background:rgba(255,255,255,0.9);
+  padding:35px;
+  border-radius:25px;
+  max-width:700px;
+}
+
+.option{
+  margin:12px 0;
+  padding:10px;
+  border-radius:20px;
+  background:#ffe3ef;
+  cursor:pointer;
+}
+.option:hover{background:#ffc1dc;}
+
+.wrong{
+  color:#c2185b;
+  margin-top:15px;
+  font-weight:bold;
+}
+
+/* Text card */
+.text-card{
+  background:rgba(255,255,255,0.9);
+  padding:40px;
+  border-radius:30px;
+  line-height:1.7;
+  max-width:900px;
+}
+
+/* Cake */
+#cake{font-size:6rem;}
+</style>
+</head>
+
+<body>
+
+<!-- DATE LOCK (PAST DATE – OPENS NOW) -->
+<section id="lock">
+  <h2>Loading your surprise… 💗</h2>
+</section>
+
+<div id="content" class="hidden">
+
+<!-- FLOWERS -->
+<section>
+  <button class="button" onclick="next()">Make flowers bloom 🌸</button>
+</section>
+
+<!-- CAKE -->
+<section>
+  <div id="cake">🎂🕯️</div>
+  <p>Make a wish</p>
+  <button class="button" onclick="next()">Blow the candle</button>
+</section>
+
+<!-- QUESTIONS -->
+<section id="quiz">
+  <h2 id="qnum">Question 1 of 18</h2>
+  <div class="qbox">
+    <p id="qtext"></p>
+    <div id="options"></div>
+    <div id="feedback" class="wrong"></div>
+  </div>
+</section>
+
+<!-- REVEALS -->
+<section id="reveals" class="hidden">
+  <h2>4 Lines I’ve Never Said Out Loud</h2>
+  <p id="revealText"></p>
+  <button class="button" onclick="nextReveal()">Next</button>
+</section>
+
+<!-- PROMISES -->
+<section id="promises" class="hidden">
+  <h2>4 Promises</h2>
+  <p id="promiseText"></p>
+  <button class="button" onclick="nextPromise()">Next</button>
+</section>
+
+<!-- STEPS -->
+<section id="steps" class="hidden">
+  <h2 id="stepText"></h2>
+  <button class="button" onclick="nextStep()">Continue</button>
+</section>
+
+<!-- BIG TEXT -->
+<section id="message" class="hidden">
+  <div class="banner">Happy Birthday Daddy</div>
+  <div class="text-card">
+    My boy officially became an adult Yayyy!!! I'm incredibly lucky to have you in my life baby.
+    The way you handle everything shows how mature and strong you are.<br><br>
+
+    Your girl loves you more than you could ever imagine and she cannot live a life without you.
+    Truly Sanjai, you deserve all the happiness.<br><br>
+
+    Whenever I feel low I just imagine your handsome and innocent face, sometimes even imagining you
+    smiling at me and asking <em>“Ena di pondati”</em> (hehe). All this makes me super duper happy.<br><br>
+
+    This is the beginning of a new chapter in your life. The future holds a lot for you,
+    and you deserve every good thing.<br><br>
+
+    No matter where life takes you, you don’t have to face it alone,
+    this kuttachi will always be with you.<br><br>
+
+    I promise you darling, through every high and low, I’ll be your loudest supporter.
+    All the best for your exam!!<br><br>
+
+    <strong>Once again a Veryyyy Happyyy B'dayy da Purusha ❤</strong><br><br>
+    — <em>Ananya Sanjai</em>
+  </div>
+</section>
+
+<!-- VOICE -->
+<section id="voiceSection" class="hidden">
+  <h2>A little something from me 💌</h2>
+  <button class="button" onclick="playVoice()">Play my voice</button>
+</section>
+
+</div>
+
+<audio id="voice">
+  <source src="voice.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+/* Unlock */
+document.getElementById("lock").style.display="none";
+document.getElementById("content").classList.remove("hidden");
+
+/* Scroll */
+function next(){
+  window.scrollBy({top:window.innerHeight,behavior:"smooth"});
+}
+
+/* QUIZ DATA */
+const questions=[
+ {q:"Who among us is the dumbest?",o:["Sanjai","Mrs. Sanjai"],a:1},
+ {q:"Who usually understands first during an argument?",o:["You","Me"],a:0},
+ {q:"What part of you do I feel safest with?",o:["Your words","Your silence"],a:0},
+ {q:"What do I secretly notice the most about you?",o:["Your patience","Your confidence"],a:0},
+ {q:"When I feel low, what comforts me the most?",o:["Your voice","Your presence","YOU"],a:2},
+ {q:"What do you think love means to us now?",o:["Growing together","Standing together","Both"],a:2}
+];
+
+let qi=0;
+const qtext=document.getElementById("qtext");
+const options=document.getElementById("options");
+const feedback=document.getElementById("feedback");
+const qnum=document.getElementById("qnum");
+
+function loadQ(){
+  qnum.innerText=`Question ${qi+1} of 18`;
+  qtext.innerText=questions[qi].q;
+  options.innerHTML="";
+  feedback.innerText="";
+  questions[qi].o.forEach((opt,i)=>{
+    const d=document.createElement("div");
+    d.className="option";
+    d.innerText=opt;
+    d.onclick=()=>{
+      if(i===questions[qi].a){
+        qi++;
+        if(qi<questions.length) loadQ();
+        else{
+          document.getElementById("quiz").classList.add("hidden");
+          document.getElementById("reveals").classList.remove("hidden");
+        }
+      }else{
+        feedback.innerText="Wrong baby!";
+      }
+    };
+    options.appendChild(d);
+  });
+}
+loadQ();
+
+/* REVEALS */
+const reveals=[
+ "I notice how you choose calm even when things are heavy.",
+ "I feel proud of the man you’re becoming.",
+ "With you, I don’t feel the need to pretend.",
+ "You feel like home, not excitement that fades."
+];
+let ri=0;
+function nextReveal(){
+  document.getElementById("revealText").innerText=reveals[ri];
+  ri++;
+  if(ri===reveals.length){
+    document.getElementById("reveals").classList.add("hidden");
+    document.getElementById("promises").classList.remove("hidden");
+  }
+}
+
+/* PROMISES */
+const promises=[
+ "I promise to listen even when I don’t fully understand.",
+ "I promise not to walk away when things get difficult.",
+ "I promise to be honest, even when it’s uncomfortable.",
+ "I promise to support your dreams, even the quiet ones."
+];
+let pi=0;
+function nextPromise(){
+  document.getElementById("promiseText").innerText=promises[pi];
+  pi++;
+  if(pi===promises.length){
+    document.getElementById("promises").classList.add("hidden");
+    document.getElementById("steps").classList.remove("hidden");
+  }
+}
+
+/* STEPS */
+const steps=[
+ "Step 15 — Learning from mistakes",
+ "Step 16 — Taking responsibility",
+ "Step 17 — Standing strong on your own",
+ "Step 18 — Choosing who you become"
+];
+let si=0;
+function nextStep(){
+  document.getElementById("stepText").innerText=steps[si];
+  si++;
+  if(si===steps.length){
+    document.getElementById("steps").classList.add("hidden");
+    document.getElementById("message").classList.remove("hidden");
+    document.getElementById("voiceSection").classList.remove("hidden");
+  }
+}
+
+/* Voice */
+function playVoice(){
+  document.getElementById("voice").play();
+}
+</script>
+
+</body>
+</html>
